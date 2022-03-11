@@ -36,26 +36,26 @@ $conn->query($sql);
 <?php
 if (isset($_POST["email"]) and isset($_POST["pword"]))
 {
-    $email=$_POST["email"];
-    $pwd=md5($_POST["pword"]);
-    $sql="SELECT * FROM Users WHERE email='$email' and pwhash='$pwd'";
-    $result=$conn->query($sql);
-    if ($result->num_rows==0)
-    {
-        echo "<br>There is no users with this data in the database, register first!";
-    }
-    else
-    {
-        $data=$result->fetch_assoc();
-        $logincount=$data["logincount"];
-        $id=$data["id"];
-        $logincount++;
+        $email=$_POST["email"];
+        $pwd=md5($_POST["pword"]);
+        $sql="SELECT * FROM Users WHERE email='$email' and pwhash='$pwd'";
+        $result=$conn->query($sql);
+        if ($result->num_rows==0)
+        {
+            echo "<br>There is no user with this data in the database, register first!";
+        }
+        else
+        {
+            $data=$result->fetch_assoc();
+            $logincount=$data["logincount"];
+            $id=$data["id"];
+            $logincount++;
 
 
-        $sql="update users set logincount='$logincount' where id='$id'";
-        $conn->query($sql);
-        header('Location: index.php');
-    }
+            $sql="update users set logincount='$logincount' where id='$id'";
+            $conn->query($sql);
+            header('Location: index.php');
+        }
 }
 
 ?>
