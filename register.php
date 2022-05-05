@@ -1,5 +1,6 @@
 <?php
 include("login.php");
+include("sql_inj_filter.php");
 $conn = new mysqli($host, $user, $password);
 $conn->select_db("DB5");
 ?>
@@ -25,7 +26,11 @@ $conn->select_db("DB5");
 <?php //todo validate
 if (isset($_POST["email"]) and isset($_POST["pword"]) and isset($_POST["pwordagain"]))
 {
-    if (strlen($_POST["email"])==0 or strlen($_POST["pword"])<8)
+    if (filter_input(INPUT_POST,"email", FILTER_VALIDATE_EMAIL)===false)
+    {
+        echo "Invalid email.<br>";
+    }
+    else if (strlen($_POST["pword"])<8)
     {
         echo "<br>You must enter a vaild e-mail address, and a minimum 8 characters long password!";
     }
@@ -37,8 +42,8 @@ if (isset($_POST["email"]) and isset($_POST["pword"]) and isset($_POST["pwordaga
         }
         else
         {
-            $email = $_POST["email"];
-            $pwd = md5($_POST["pword"]);
+            $email = htmlspecialchars(filter_sql($_POST["email"]));
+            $pwd = md5(htmlspecialchars(filter_sql($_POST["pword"])));
             $logincount = 0;
 
             $sql = "SELECT * FROM Users WHERE email='$email'";

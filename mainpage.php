@@ -1,5 +1,6 @@
 <?php
 include("login.php");
+include("sql_inj_filter.php");
 $conn = new mysqli($host, $user, $password);
 if ($conn->connect_error) {
     die ("Connection error: " . $conn->connect_error);
@@ -36,8 +37,10 @@ $conn->query($sql);
 <?php
 if (isset($_POST["email"]) and isset($_POST["pword"]))
 {
-        $email=$_POST["email"];
-        $pwd=md5($_POST["pword"]);
+        $email=htmlspecialchars(filter_sql($_POST["email"]));
+        $pwd=md5(htmlspecialchars(filter_sql($_POST["pword"])));
+
+
         $sql="SELECT * FROM Users WHERE email='$email' and pwhash='$pwd'";
         $result=$conn->query($sql);
         if ($result->num_rows==0)
@@ -54,10 +57,9 @@ if (isset($_POST["email"]) and isset($_POST["pword"]))
 
             $sql="update users set logincount='$logincount' where id='$id'";
             $conn->query($sql);
-            header('Location: index.php');
+            header('Location: indexpage.php');
         }
 }
-
 ?>
 
 
