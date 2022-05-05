@@ -1,6 +1,7 @@
 <?php
 include("login.php");
 include("sql_inj_filter.php");
+session_start();
 $conn = new mysqli($host, $user, $password);
 if ($conn->connect_error) {
     die ("Connection error: " . $conn->connect_error);
@@ -52,6 +53,7 @@ if (isset($_POST["email"]) and isset($_POST["pword"]))
             $data=$result->fetch_assoc();
             $logincount=$data["logincount"];
             $id=$data["id"];
+            $_SESSION["user"]=$id;
             $logincount++;
 
 

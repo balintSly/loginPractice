@@ -47,6 +47,7 @@ if (isset($_POST["email"]) and isset($_POST["pword"]) and isset($_POST["pwordaga
             $logincount = 0;
 
             $sql = "SELECT * FROM Users WHERE email='$email'";
+
             $result = $conn->query($sql);
             if ($result->num_rows == 0) {
                 $sql = "Insert into Users (email, pwhash, logincount) VALUES ('$email', '$pwd', '$logincount')";
@@ -58,9 +59,5 @@ if (isset($_POST["email"]) and isset($_POST["pword"]) and isset($_POST["pwordaga
         }
 
     }
-
-
-
-
 }
 ?>
